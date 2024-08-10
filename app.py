@@ -6,7 +6,7 @@ import requests
 from io import BytesIO
 
 # Set the API token directly in the code
-os.environ["REPLICATE_API_TOKEN"] = "r8_OYKRViH4zYgwU2XezWgxmZ17egaXM7N4FXeXC"
+load_dotenv()
 
 st.title("Imagine Your Dream")
 st.text("Made by Samiul")
