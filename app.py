@@ -4,6 +4,7 @@ import time
 import os
 import requests
 from io import BytesIO
+from dotenv import load_dotenv
 
 # Set the API token directly in the code
 load_dotenv()
