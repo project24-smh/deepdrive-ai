@@ -1,39 +1,24 @@
 import streamlit as st
 import requests
-from PIL import Image, UnidentifiedImageError
+from PIL import Image
 import io
 import base64
 
-# Hugging Face API URLs and headers
-API_URLS = {
-    "FLUX.1-schnell": "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
-    "FLUX.1-dev": "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
-    "RealismLora": "https://api-inference.huggingface.co/models/XLabs-AI/flux-RealismLora"
-}
+# Hugging Face API URL and headers
+API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev"
 headers = {"Authorization": "Bearer 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"}
 
-def query(api_url, payload):
-    response = requests.post(api_url, headers=headers, json=payload)
-    if response.status_code == 200:
-        return response.content
-    else:
-        st.error(f"API request failed with status code {response.status_code}: {response.text}")
-        return None
+def query(payload):
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.content
 
-def generate_image(prompt, model_name):
+def generate_image(prompt):
     try:
-        api_url = API_URLS[model_name]
-        image_bytes = query(api_url, {"inputs": prompt})
-        if image_bytes:
-            try:
-                # Check if the response is a valid image
-                image = Image.open(io.BytesIO(image_bytes))
-                return image
-            except UnidentifiedImageError:
-                st.error("The API response is not a valid image. Please try a different prompt or model.")
+        image_bytes = query({"inputs": prompt})
+        return Image.open(io.BytesIO(image_bytes))
     except Exception as e:
         st.error(f"Error generating image: {e}")
-    return None
+        return None
 
 def image_to_base64(img):
     """Convert PIL image to base64 string."""
@@ -48,9 +33,6 @@ def main():
     if app_mode == "Generate Image from Prompt":
         st.title("Generate Image from Prompt")
 
-        # Model selection
-        model_name = st.selectbox("Select a model", ["FLUX.1-schnell", "FLUX.1-dev", "RealismLora"])
-
         # Prompt input
         prompt = st.text_input("Enter a prompt for the image:")
 
@@ -58,7 +40,7 @@ def main():
         if st.button("Generate Image"):
             if prompt:
                 with st.spinner('Generating image...'):
-                    img = generate_image(prompt, model_name)
+                    img = generate_image(prompt)
                     if img:
                         st.image(img, caption="Generated Image", use_column_width=True)
                         
@@ -100,7 +82,7 @@ def main():
                 target_b64 = image_to_base64(target_img)
 
                 # API call for face swapping
-                api_key = "SG_00ff2b1abfdc214f"  # Directly included API key
+                api_key = "SG_498e9675cc2805a5"  # Directly included API key
                 url = "https://api.segmind.com/v1/faceswap-v2"
                 data = {
                     "source_img": source_b64,
