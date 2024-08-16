@@ -4,21 +4,31 @@ from PIL import Image
 import io
 import base64
 
-# Hugging Face API URL and headers
-API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev"
+# Hugging Face API URLs and headers
+API_URLS = {
+    "FLUX.1-schnell": "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+    "FLUX.1-dev": "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+    "RealismLora": "https://api-inference.huggingface.co/models/XLabs-AI/flux-RealismLora"
+}
 headers = {"Authorization": "Bearer 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"}
 
-def query(payload):
-    response = requests.post(API_URL, headers=headers, json=payload)
-    return response.content
+def query(api_url, payload):
+    response = requests.post(api_url, headers=headers, json=payload)
+    if response.status_code == 200:
+        return response.content
+    else:
+        st.error(f"API request failed with status code {response.status_code}: {response.text}")
+        return None
 
-def generate_image(prompt):
+def generate_image(prompt, model_name):
     try:
-        image_bytes = query({"inputs": prompt})
-        return Image.open(io.BytesIO(image_bytes))
+        api_url = API_URLS[model_name]
+        image_bytes = query(api_url, {"inputs": prompt})
+        if image_bytes:
+            return Image.open(io.BytesIO(image_bytes))
     except Exception as e:
         st.error(f"Error generating image: {e}")
-        return None
+    return None
 
 def image_to_base64(img):
     """Convert PIL image to base64 string."""
@@ -33,6 +43,9 @@ def main():
     if app_mode == "Generate Image from Prompt":
         st.title("Generate Image from Prompt")
 
+        # Model selection
+        model_name = st.selectbox("Select a model", ["FLUX.1-schnell", "FLUX.1-dev", "RealismLora"])
+
         # Prompt input
         prompt = st.text_input("Enter a prompt for the image:")
 
@@ -40,7 +53,7 @@ def main():
         if st.button("Generate Image"):
             if prompt:
                 with st.spinner('Generating image...'):
-                    img = generate_image(prompt)
+                    img = generate_image(prompt, model_name)
                     if img:
                         st.image(img, caption="Generated Image", use_column_width=True)
                         
