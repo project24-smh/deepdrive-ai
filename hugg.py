@@ -3,6 +3,7 @@ import requests
 from PIL import Image
 import io
 import base64
+import time
 
 # Hugging Face API URLs and headers
 API_URLS = {
@@ -12,13 +13,20 @@ API_URLS = {
 }
 headers = {"Authorization": "Bearer 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"}
 
-def query(api_url, payload):
-    response = requests.post(api_url, headers=headers, json=payload)
-    if response.status_code == 200:
-        return response.content
-    else:
-        st.error(f"API request failed with status code {response.status_code}: {response.text}")
-        return None
+def query(api_url, payload, max_retries=5, delay=10):
+    for attempt in range(max_retries):
+        response = requests.post(api_url, headers=headers, json=payload)
+        if response.status_code == 200:
+            return response.content
+        elif response.status_code == 503 and 'loading' in response.json().get('error', ''):
+            estimated_time = response.json().get('estimated_time', delay)
+            st.warning(f"Model is loading, retrying in {estimated_time:.2f} seconds...")
+            time.sleep(min(estimated_time, delay))  # Wait before retrying
+        else:
+            st.error(f"API request failed with status code {response.status_code}: {response.text}")
+            return None
+    st.error("Max retries exceeded. Please try again later.")
+    return None
 
 def generate_image(prompt, model_name):
     try:
