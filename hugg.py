@@ -1,9 +1,8 @@
 import streamlit as st
 import requests
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import io
 import base64
-import time
 
 # Hugging Face API URLs and headers
 API_URLS = {
@@ -13,27 +12,25 @@ API_URLS = {
 }
 headers = {"Authorization": "Bearer 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"}
 
-def query(api_url, payload, max_retries=5, delay=10):
-    for attempt in range(max_retries):
-        response = requests.post(api_url, headers=headers, json=payload)
-        if response.status_code == 200:
-            return response.content
-        elif response.status_code == 503 and 'loading' in response.json().get('error', ''):
-            estimated_time = response.json().get('estimated_time', delay)
-            st.warning(f"Model is loading, retrying in {estimated_time:.2f} seconds...")
-            time.sleep(min(estimated_time, delay))  # Wait before retrying
-        else:
-            st.error(f"API request failed with status code {response.status_code}: {response.text}")
-            return None
-    st.error("Max retries exceeded. Please try again later.")
-    return None
+def query(api_url, payload):
+    response = requests.post(api_url, headers=headers, json=payload)
+    if response.status_code == 200:
+        return response.content
+    else:
+        st.error(f"API request failed with status code {response.status_code}: {response.text}")
+        return None
 
 def generate_image(prompt, model_name):
     try:
         api_url = API_URLS[model_name]
         image_bytes = query(api_url, {"inputs": prompt})
         if image_bytes:
-            return Image.open(io.BytesIO(image_bytes))
+            try:
+                # Check if the response is a valid image
+                image = Image.open(io.BytesIO(image_bytes))
+                return image
+            except UnidentifiedImageError:
+                st.error("The API response is not a valid image. Please try a different prompt or model.")
     except Exception as e:
         st.error(f"Error generating image: {e}")
     return None
@@ -103,7 +100,7 @@ def main():
                 target_b64 = image_to_base64(target_img)
 
                 # API call for face swapping
-                api_key = "SG_498e9675cc2805a5"  # Directly included API key
+                api_key = "SG_00ff2b1abfdc214f"  # Directly included API key
                 url = "https://api.segmind.com/v1/faceswap-v2"
                 data = {
                     "source_img": source_b64,
