@@ -20,6 +20,12 @@ def generate_image(prompt):
         st.error(f"Error generating image: {e}")
         return None
 
+def image_to_base64(img):
+    """Convert PIL image to base64 string."""
+    buffered = io.BytesIO()
+    img.save(buffered, format="JPEG")
+    return base64.b64encode(buffered.getvalue()).decode("utf-8")
+
 def main():
     st.sidebar.title("Select an Option")
     app_mode = st.sidebar.radio("Choose an option", ["Generate Image from Prompt", "Face Swap"])
