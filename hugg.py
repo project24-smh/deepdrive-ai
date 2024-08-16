@@ -5,7 +5,7 @@ import io
 import base64
 
 # Hugging Face API URL and headers
-API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev"
+API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
 headers = {"Authorization": "Bearer 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"}
 
 def query(payload):
