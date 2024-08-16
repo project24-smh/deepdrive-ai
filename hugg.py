@@ -76,7 +76,7 @@ def main():
                 target_b64 = image_to_base64(target_img)
 
                 # API call for face swapping
-                api_key = "SG_00ff2b1abfdc214f"  # Directly included API key
+                api_key = "SG_498e9675cc2805a5"  # Directly included API key
                 url = "https://api.segmind.com/v1/faceswap-v2"
                 data = {
                     "source_img": source_b64,
