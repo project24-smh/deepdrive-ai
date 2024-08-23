@@ -28,7 +28,7 @@ def image_to_base64(img):
 
 def main():
     st.sidebar.title("Select an Option")
-    app_mode = st.sidebar.radio("Choose an option", ["Generate Image from Prompt", "Face Swap"])
+    app_mode = st.sidebar.radio("Choose an option", ["Generate Image from Prompt", "Face Swap", "Dalle3"])
 
     if app_mode == "Generate Image from Prompt":
         st.title("Generate Image from Prompt")
@@ -119,6 +119,18 @@ def main():
                     )
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}")
+
+    elif app_mode == "Dalle3":
+        st.title("Dalle3 Integration")
+
+        # Embed the external page in the main page
+        st.markdown(
+            f"""
+            <iframe src="https://nymbo-flux-1-dev-serverless.hf.space/" 
+            width="100%" height="800" frameborder="0" scrolling="auto"></iframe>
+            """,
+            unsafe_allow_html=True
+        )
 
 if __name__ == "__main__":
     main()
