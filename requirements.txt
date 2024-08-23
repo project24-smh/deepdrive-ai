@@ -3,4 +3,5 @@ streamlit==1.30.0
 requests
 streamlit-image-select
 python-dotenv
+pip install --upgrade pip
 pip install gradio-client
