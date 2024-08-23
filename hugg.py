@@ -120,8 +120,8 @@ def main():
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}")
 
-    elif app_mode == "Dalle3":
-        st.title("Dalle3 Integration")
+    elif app_mode == "Int. Dalle-3/F":
+        st.title("Dalle-3 Integration")
 
         # Embed the external page in the main page
         st.markdown(
