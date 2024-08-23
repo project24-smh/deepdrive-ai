@@ -3,5 +3,8 @@ streamlit==1.30.0
 requests
 streamlit-image-select
 python-dotenv
+numpy==1.24.2
+pandas==2.0.0
 pip install --upgrade pip
+python -m pip install --upgrade pip
 pip install gradio-client
