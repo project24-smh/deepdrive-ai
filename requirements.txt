@@ -1,10 +1,6 @@
-replicate
 streamlit==1.30.0
-requests
+requests==2.28.1
 streamlit-image-select
 python-dotenv
-numpy==1.24.2
-pandas==2.0.0
-pip install --upgrade pip
-python -m pip install --upgrade pip
-pip install gradio-client
+Pillow==9.3.0
+gradio-client
