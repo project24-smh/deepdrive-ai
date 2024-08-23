@@ -28,7 +28,7 @@ def image_to_base64(img):
 
 def main():
     st.sidebar.title("Select an Option")
-    app_mode = st.sidebar.radio("Choose an option", ["Generate Image from Prompt", "Face Swap", "Dalle3"])
+    app_mode = st.sidebar.radio("Choose an option", ["Generate Image from Prompt", "Face Swap", "Int. Dalle-3/F"])
 
     if app_mode == "Generate Image from Prompt":
         st.title("Generate Image from Prompt")
