@@ -2,5 +2,4 @@ streamlit==1.30.0
 requests==2.28.1
 streamlit-image-select
 python-dotenv
-Pillow==9.3.0
 gradio-client
