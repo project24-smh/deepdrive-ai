@@ -17,6 +17,7 @@ IMAGE_GEN_API_URL = "https://api-inference.huggingface.co/models/black-forest-la
 IMAGE_GEN_HEADERS = {"Authorization": "Bearer YOUR_HUGGINGFACE_TOKEN"}  # Replace with your Hugging Face token
 
 # Helper functions
+@st.cache_data
 def query(payload, url, headers):
     try:
         response = requests.post(url, headers=headers, json=payload)
@@ -26,6 +27,7 @@ def query(payload, url, headers):
         st.error(f"Error querying API: {e}")
         return None
 
+@st.cache_data
 def generate_image(prompt):
     try:
         image_bytes = query({"inputs": prompt}, IMAGE_GEN_API_URL, IMAGE_GEN_HEADERS)
@@ -35,6 +37,7 @@ def generate_image(prompt):
         st.error(f"Error generating image: {e}")
     return None
 
+@st.cache_data
 def upscale_image(image_file_path, upscale_to, steps, noise_level, fidelity, seed, guidance_scale, sampler):
     try:
         result = upscale_client.predict(
@@ -53,6 +56,7 @@ def upscale_image(image_file_path, upscale_to, steps, noise_level, fidelity, see
         st.error(f"Error upscaling image: {e}")
         return None
 
+@st.cache_data
 def new_model_inference(prompt, seed, randomize_seed, wallpaper_size, num_inference_steps, style_name):
     try:
         result = new_model_client.predict(
@@ -74,6 +78,7 @@ def image_to_base64(img):
     img.save(buffered, format="JPEG")
     return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
+@st.cache_data
 def run_image_api(image_path, param_0=0, param_1=0, param_3=True):
     try:
         result = upscale_client.predict(
@@ -88,6 +93,7 @@ def run_image_api(image_path, param_0=0, param_1=0, param_3=True):
         st.error(f"Error calling the Image API: {e}")
         return None
 
+@st.cache_data
 def run_video_api(image_path, video_path, param_2=True, param_3=True, param_4=True):
     try:
         result = upscale_client.predict(
@@ -103,6 +109,7 @@ def run_video_api(image_path, video_path, param_2=True, param_3=True, param_4=Tr
         st.error(f"Error calling the Video API: {e}")
         return None
 
+@st.cache_data
 def run_square_video_api(video_url):
     try:
         result = upscale_client.predict(
@@ -137,7 +144,7 @@ if "new_model_result" not in st.session_state:
 st.sidebar.title("Select an Option")
 app_mode = st.sidebar.radio(
     "Choose an option",
-    ["Gen.Schnell", "Flux1 Ultimate", "Int. Dalle-3/F", "Face Swap", "Image Upscaler", "Live Portrait"]
+    ["Generate Image from Prompt", "Face Swap", "Gradio API Integration", "Image Upscaler", "Flux Ultimate"]
 )
 
 if app_mode == "Generate Image from Prompt":
@@ -220,17 +227,6 @@ elif app_mode == "Face Swap":
             file_name="face_swapped_image.jpg",
             mime="image/jpeg"
         )
-
-elif app_mode == "Int. Dalle-3/F":
-    st.title("Dalle-3 Integration")
-
-    st.markdown(
-        """
-        <iframe src="https://nymbo-flux-1-dev-serverless.hf.space/" 
-        width="100%" height="800" frameborder="0" scrolling="auto"></iframe>
-        """,
-        unsafe_allow_html=True
-    )
 
 elif app_mode == "Gradio API Integration":
     st.title("Gradio Client API Integration")
@@ -369,7 +365,6 @@ elif app_mode == "Flux Ultimate":
                 processing_time = round(time.time() - start_time, 2)
                 st.write(f"Processing Time: {processing_time} seconds")
 
-                # Check and process the result
                 if result:
                     # Assuming the result is a tuple (image, ...)
                     image_data = result[0]  # Adjust this based on actual result structure
