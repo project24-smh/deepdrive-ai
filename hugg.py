@@ -258,3 +258,4 @@ elif app_mode == "Gradio API Integration":
 
         end_time = time.time()
         wait_time.text(f"Processing completed in {end_time - start_time:.2f} seconds.")
+
