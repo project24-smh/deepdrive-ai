@@ -137,10 +137,10 @@ if "new_model_result" not in st.session_state:
 st.sidebar.title("Select an Option")
 app_mode = st.sidebar.radio(
     "Choose an option",
-    ["Generate Image from Prompt", "Face Swap", "Int. Dalle-3/F", "Gradio API Integration", "Image Upscaler", "New Model"]
+    ["Gen.Schnell", "Flux Ultimate", "Int. Dalle-3/F", "Face Swap","Image Upscaler", "Live Portrait"]
 )
 
-if app_mode == "Generate Image from Prompt":
+if app_mode == "Gen.Schnell":
     st.title("Generate Image from Prompt")
 
     prompt = st.text_input("Enter a prompt for the image:")
@@ -232,7 +232,7 @@ elif app_mode == "Int. Dalle-3/F":
         unsafe_allow_html=True
     )
 
-elif app_mode == "Gradio API Integration":
+elif app_mode == "Live Portrait":
     st.title("Gradio Client API Integration")
 
     api_options = ["Execute Image", "Execute Video", "Check Square Video"]
@@ -348,7 +348,7 @@ elif app_mode == "Image Upscaler":
             mime="image/png"
         )
 
-elif app_mode == "New Model":
+elif app_mode == "Flux Ultimate":
     st.title("New Model Integration")
 
     prompt = st.text_input("Enter prompt for new model:")
