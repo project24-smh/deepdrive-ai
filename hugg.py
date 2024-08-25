@@ -137,7 +137,7 @@ if "new_model_result" not in st.session_state:
 st.sidebar.title("Select an Option")
 app_mode = st.sidebar.radio(
     "Choose an option",
-    ["Gen.Schnell", "Flux1 Ultimate", "Int. Dalle-3/F", "Face Swap", "Image Upscaler", "Live Portrait"]
+    ["Generate Image from Prompt", "Face Swap", "Int. Dalle-3/F", "Gradio API Integration", "Image Upscaler", "New Model"]
 )
 
 if app_mode == "Generate Image from Prompt":
@@ -348,10 +348,10 @@ elif app_mode == "Image Upscaler":
             mime="image/png"
         )
 
-elif app_mode == "Flux Ultimate":
-    st.title("Flux Ultimate Integration")
+elif app_mode == "New Model":
+    st.title("New Model Integration")
 
-    prompt = st.text_input("Enter prompt for Flux:")
+    prompt = st.text_input("Enter prompt for new model:")
     
     advanced_options = st.expander("Advanced Options")
     with advanced_options:
@@ -361,7 +361,7 @@ elif app_mode == "Flux Ultimate":
         num_inference_steps = st.slider("Select number of inference steps", 1, 100, 4)
         style_name = st.selectbox("Select style name", ["Style Zero", "Style One", "Style Two"])
 
-    if st.button("Run Flux Ultimate"):
+    if st.button("Run New Model"):
         if prompt:
             with st.spinner('Processing...'):
                 start_time = time.time()
@@ -390,14 +390,14 @@ elif app_mode == "Flux Ultimate":
                     if image:
                         st.image(image, caption="Generated Image", use_column_width=True)
                         buffer = io.BytesIO()
-                        image.save(buffer, format="JPEG")
+                        image.save(buffer, format="PNG")
                         buffer.seek(0)
 
                         st.download_button(
                             label="Download Generated Image",
                             data=buffer,
-                            file_name="new_model_generated_image.jpeg",
-                            mime="image/jpeg"
+                            file_name="new_model_generated_image.png",
+                            mime="image/png"
                         )
                     else:
                         st.error("Failed to process the image.")
