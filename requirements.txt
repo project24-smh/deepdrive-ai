@@ -3,5 +3,4 @@ requests==2.28.1
 streamlit-image-select
 python-dotenv
 gradio-client
-time
-tempfile
+
