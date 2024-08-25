@@ -17,9 +17,10 @@ def get_upscale_client():
 def get_new_model_client():
     return Client("prithivMLmods/FLUX.1-SIM")
 
-# Hugging Face API URLs and headers
+# Hugging Face API URL and headers
 IMAGE_GEN_API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-IMAGE_GEN_HEADERS = {"Authorization": "Bearer YOUR_HUGGINGFACE_TOKEN"}  # Replace with your Hugging Face token
+HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")  # Use environment variable for sensitive information
+IMAGE_GEN_HEADERS = {"Authorization": f"Bearer {HUGGINGFACE_TOKEN}"}
 
 # Helper functions
 def query(payload, url, headers):
@@ -192,7 +193,7 @@ elif app_mode == "Face Swap":
             source_b64 = image_to_base64(source_img)
             target_b64 = image_to_base64(target_img)
 
-            api_key = "SG_498e9675cc2805a5"  # Directly included API key
+            api_key = os.getenv("SEGMIND_API_KEY")  # Use environment variable for API key
             url = "https://api.segmind.com/v1/faceswap-v2"
             data = {
                 "source_img": source_b64,
@@ -340,4 +341,3 @@ elif app_mode == "Flux Ultimate":
         )
 
 # Additional code for video and square video API functionalities can be similarly updated and included.
-
