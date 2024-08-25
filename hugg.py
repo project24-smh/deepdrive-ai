@@ -140,7 +140,7 @@ app_mode = st.sidebar.radio(
     ["Gen.Schnell", "Flux1 Ultimate", "Int. Dalle-3/F", "Face Swap", "Image Upscaler", "Live Portrait"]
 )
 
-if app_mode == "Generate Image from Prompt":
+if app_mode == "Gen.Schnell":
     st.title("Generate Image from Prompt")
 
     prompt = st.text_input("Enter a prompt for the image:")
