@@ -14,7 +14,7 @@ new_model_client = Client("prithivMLmods/FLUX.1-SIM")
 
 # Hugging Face API configuration
 IMAGE_GEN_API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-IMAGE_GEN_HEADERS = {"Authorization": f"Bearer {st.secrets['HUGGINGFACE_TOKEN']}"}
+IMAGE_GEN_HEADERS = {"Authorization": "Bearer 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"}
 
 # Helper functions
 def query(payload, url, headers):
