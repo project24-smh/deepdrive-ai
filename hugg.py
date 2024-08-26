@@ -405,3 +405,4 @@ elif app_mode == "Flux Ultimate":
                     st.error("Failed to generate image.")
         else:
             st.error("Please enter a prompt.")
+            
