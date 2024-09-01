@@ -10,7 +10,7 @@ import base64
 
 # Initialize the Gradio clients for image upscaling and the new model
 upscale_client = Client("gokaygokay/TileUpscalerV2")
-new_model_client = Client("multimodalart/FLUX.1-merged")
+new_model_client = Client("prithivMLmods/FLUX.1-SIM")
 
 # Hugging Face API URLs and headers
 IMAGE_GEN_API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
