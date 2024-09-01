@@ -137,7 +137,7 @@ if "new_model_result" not in st.session_state:
 st.sidebar.title("Select an Option")
 app_mode = st.sidebar.radio(
     "Choose an option",
-    ["Gen.Schnell", "Int. dev", "Flux Ultimate", "Int. Dalle-3/F", "Face Swap","Image Upscaler", "Live Portrait"]
+    ["Gen.Schnell", "Flux Ultimate", "Int. Dalle-3/F", "Face Swap","Image Upscaler", "Live Portrait"]
 )
 
 if app_mode == "Gen.Schnell":
@@ -406,14 +406,4 @@ elif app_mode == "Flux Ultimate":
         else:
             st.error("Please enter a prompt.")
 
-elif app_mode == "Int. dev":
-    st.title("Dev Integration")
-
-    st.markdown(
-        """
-        <iframe src="https://prithivmlmods-flux-realpix.hf.space/" 
-        width="100%" height="800" frameborder="0" scrolling="auto"></iframe>
-        """,
-        unsafe_allow_html=True
-    )
             
