@@ -10,7 +10,7 @@ import base64
 
 # Initialize the Gradio clients for image upscaling and the new model
 upscale_client = Client("gokaygokay/TileUpscalerV2")
-
+# new_model_client = Client("prithivMLmods/FLUX.1-SIM")
 
 # Hugging Face API URLs and headers
 IMAGE_GEN_API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
@@ -348,6 +348,26 @@ elif app_mode == "Image Upscaler":
             mime="image/png"
         )
 
+elif app_mode == "Flux Ultimate":
+    st.title("New Model Integration")
+
+    prompt = st.text_input("Enter prompt for new model:")
+    
+    advanced_options = st.expander("Advanced Options")
+    with advanced_options:
+        seed = st.slider("Select the seed value", 0, 100, 0)
+        randomize_seed = st.checkbox("Randomize Seed", value=True)
+        wallpaper_size = st.selectbox("Select wallpaper size", ["Default (1024x1024)", "Small (512x512)", "Large (2048x2048)"])
+        num_inference_steps = st.slider("Select number of inference steps", 1, 100, 4)
+        style_name = st.selectbox("Select style name", ["Style Zero", "Style One", "Style Two"])
+
+    if st.button("Run New Model"):
+        if prompt:
+            with st.spinner('Processing...'):
+                start_time = time.time()
+                result = new_model_inference(prompt, seed, randomize_seed, wallpaper_size, num_inference_steps, style_name)
+                processing_time = round(time.time() - start_time, 2)
+                st.write(f"Processing Time: {processing_time} seconds")
 
                 # Check and process the result
                 if result:
@@ -385,5 +405,3 @@ elif app_mode == "Image Upscaler":
                     st.error("Failed to generate image.")
         else:
             st.error("Please enter a prompt.")
-
-            
