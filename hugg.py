@@ -182,7 +182,7 @@ elif app_mode == "Face Swap":
             source_b64 = image_to_base64(source_img)
             target_b64 = image_to_base64(target_img)
 
-            api_key = "SG_498e9675cc2805a5"  # Directly included API key
+            api_key = "SG_9985c2b5b368f0ec"  # Directly included API key
             url = "https://api.segmind.com/v1/faceswap-v2"
             data = {
                 "source_img": source_b64,
